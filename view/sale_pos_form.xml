@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!-- This file is part sale_pos module for Tryton.
+The COPYRIGHT file at the top level of this repository contains the full copyright notices and license terms. -->
+<data>
+    <xpath expr="/form/notebook/page[@id='sale']/field[@name='acumulativo']" position="after">
+        <label name="lock_credit"/>
+        <field name="lock_credit"/>
+    </xpath>
+        
+     <xpath expr="/form/notebook/page[@id='sale']/label[@name='shop']" position="before">
+        <label name="advanced"/>
+        <field name="advanced"/>
+    </xpath>
+    
+    <xpath expr="/form/notebook/page[@id='sale']/label[@name='shop']" position="before">
+        <label name="credit_limit"/>
+        <field name="credit_limit"/>
+    </xpath>
+    
+</data>

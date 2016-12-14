@@ -13,17 +13,17 @@ __metaclass__ = PoolMeta
 
 class Sale:
     __name__ = 'sale.sale'
-    
+
     lock_credit = fields.Boolean("Lock credit")
-    
+
     advanced = fields.Function(fields.Numeric('Advanced',
             digits=(16, Eval('currency_digits', 2)),
             depends=['currency_digits']), 'get_advanced')
-            
+
     credit_limit = fields.Function(fields.Numeric('Credit limit',
             digits=(16, Eval('currency_digits', 2)),
             depends=['currency_digits']), 'get_credit_limit')
-            
+
     @classmethod
     def __setup__(cls):
         super(Sale, cls).__setup__()
@@ -32,7 +32,7 @@ class Sale:
                     'invisible': Eval('lock_credit', True),
                 },
                 })
-                
+
         cls.payment_term.states['readonly'] |= Eval('lock_credit', True)
 
     @classmethod
@@ -41,7 +41,7 @@ class Sale:
         Config = pool.get('party.party')
         w = Config(1).lock_credit
         return w
-        
+
     @classmethod
     def get_advanced(cls, sales, names):
         pool = Pool()
@@ -50,7 +50,7 @@ class Sale:
         debit = Decimal(0.0)
         MoveLine = pool.get('account.move.line')
         sales = cls.browse(sales)
-        
+
         for sale in sales:
             party = sale.party.credit_amount
             advanced[sale.id] = party
@@ -58,7 +58,7 @@ class Sale:
             'advanced': advanced,
             }
         return result
-        
+
     @classmethod
     def get_credit_limit(cls, sales, names):
         pool = Pool()
@@ -67,12 +67,12 @@ class Sale:
         MoveLine = pool.get('account.move.line')
         sales = cls.browse(sales)
         credit_limit = {}
-        
+
         for sale in sales:
-            party = sale.party.credit_limit_amount 
+            party = sale.party.credit_limit_amount
             credit_limit[sale.id] = party
-        
+
         result = {
             'credit_limit': credit_limit,
             }
-        return result  
+        return result

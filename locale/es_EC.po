@@ -1,0 +1,35 @@
+#
+msgid ""
+msgstr "Content-Type: text/plain; charset=utf-8\n"
+
+msgctxt "field:account.configuration,rate:"
+msgid "Porcentaje de incremento de credito"
+msgstr ""
+
+msgctxt "field:party.party,lock_credit:"
+msgid "Lock credit"
+msgstr "Bloquear Crédito"
+
+msgctxt "field:party.party,rate:"
+msgid "Porcentaje de incremento de credito"
+msgstr ""
+
+msgctxt "field:sale.sale,advanced:"
+msgid "Advanced"
+msgstr "Anticipo"
+
+msgctxt "field:sale.sale,credit_limit:"
+msgid "Credit limit"
+msgstr "Límite de Crédito"
+
+msgctxt "field:sale.sale,lock_credit:"
+msgid "Lock credit"
+msgstr "Bloquear Crédito"
+
+msgctxt "view:account.configuration:"
+msgid "%"
+msgstr "%"
+
+msgctxt "view:party.party:"
+msgid "%"
+msgstr "%"

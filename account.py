@@ -13,4 +13,3 @@ class Configuration:
     __name__ = 'account.configuration'
 
     rate = fields.Float('Porcentaje de incremento de credito')
-        

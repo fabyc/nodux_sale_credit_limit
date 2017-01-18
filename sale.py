@@ -35,6 +35,30 @@ class Sale:
 
         cls.payment_term.states['readonly'] |= Eval('lock_credit', True)
 
+    @fields.depends('shop', 'party')
+    def on_change_party(self):
+        res = super(Sale, self).on_change_party()
+        pool = Pool()
+        ListAdvanced = pool.get('sale.list_advanced')
+        total_advanced = Decimal(0.0)
+        
+        all_list_advanced = ListAdvanced.search([('party', '=', self.party)])
+        if all_list_advanced:
+            for list_advanced in all_list_advanced:
+                for line in list_advanced.lines:
+                    total_advanced += line.balance
+
+        res['advanced'] = total_advanced
+
+        if self.shop:
+            if not res.get('price_list') and res.get('invoice_address'):
+                res['price_list'] = self.shop.price_list.id
+                res['price_list.rec_name'] = self.shop.price_list.rec_name
+            if not res.get('payment_term') and res.get('invoice_address'):
+                res['payment_term'] = self.shop.payment_term.id
+                res['payment_term.rec_name'] = self.shop.payment_term.rec_name
+        return res
+
     @classmethod
     def default_lock_credit(cls):
         pool = Pool()
@@ -46,14 +70,18 @@ class Sale:
     def get_advanced(cls, sales, names):
         pool = Pool()
         advanced={}
-        credit = Decimal(0.0)
-        debit = Decimal(0.0)
-        MoveLine = pool.get('account.move.line')
+        ListAdvanced = pool.get('sale.list_advanced')
         sales = cls.browse(sales)
-
+        total_advanced = Decimal(0.0)
         for sale in sales:
-            party = sale.party.credit_amount
-            advanced[sale.id] = party
+            total_advanced = Decimal(0.0)
+            all_list_advanced = ListAdvanced.search([('party', '=', sale.party)])
+            if all_list_advanced:
+                for list_advanced in all_list_advanced:
+                    for line in list_advanced.lines:
+                        total_advanced += line.balance
+
+            advanced[sale.id] = total_advanced
         result = {
             'advanced': advanced,
             }
